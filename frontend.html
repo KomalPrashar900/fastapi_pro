@@ -5,20 +5,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            min-height: 100vh;
             background: linear-gradient(-45deg, #667eea, #764ba2, #6dd5ed, #2193b0);
             background-size: 300% 300%;
             animation: gradientMove 12s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         @keyframes gradientMove {
@@ -27,139 +25,129 @@
             100% { background-position: 0% 50%; }
         }
 
+        .container {
+            display: flex;
+            gap: 30px;
+        }
+
         .card {
-            width: 420px;
-            padding: 40px;
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(25px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(20px);
             color: white;
-            animation: fadeIn 1s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h1 {
+        h1, h2 {
             text-align: center;
-            margin-bottom: 30px;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-
-        h2 {
-            margin-top: 25px;
-            font-size: 16px;
-            font-weight: 500;
-            opacity: 0.9;
         }
 
         input {
             width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 12px;
+            padding: 10px;
+            margin: 6px 0;
+            border-radius: 10px;
             border: none;
-            outline: none;
-            font-size: 14px;
             background: rgba(255,255,255,0.2);
             color: white;
-            transition: 0.3s;
         }
 
         input::placeholder {
-            color: rgba(255,255,255,0.8);
-        }
-
-        input:focus {
-            background: rgba(255,255,255,0.3);
-            box-shadow: 0 0 10px rgba(255,255,255,0.4);
+            color: rgba(255,255,255,0.7);
         }
 
         button {
             width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            border-radius: 12px;
+            padding: 10px;
+            margin-top: 8px;
             border: none;
-            font-weight: 600;
+            border-radius: 10px;
             cursor: pointer;
-            transition: 0.3s;
-            font-size: 14px;
+            font-weight: bold;
         }
 
-        .btn-add {
-            background: #00c9a7;
-            color: white;
+        .btn-add { background: #00c9a7; }
+        .btn-update { background: #f7971e; }
+        .btn-delete { background: #ff416c; }
+        .btn-get { background: #4facfe; }
+
+        ul {
+            list-style: none;
+            padding: 0;
         }
 
-        .btn-update {
-            background: #f7971e;
-            color: white;
-        }
-
-        .btn-delete {
-            background: #ff416c;
-            color: white;
-        }
-
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            opacity: 0.95;
+        li {
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
         }
 
         .message {
             text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-            opacity: 0;
-            transition: 0.5s;
+            margin-top: 10px;
         }
-
-        .show {
-            opacity: 1;
-        }
-
     </style>
 </head>
+
 <body>
 
-<div class="card">
-    <h1>🚀 Product Manager</h1>
+<div class="container">
 
-    <h2>➕ Add Product</h2>
-    <input type="number" id="addId" placeholder="Product ID">
-    <input type="text" id="addName" placeholder="Product Name">
-    <input type="number" id="addPrice" placeholder="Product Price">
-    <button class="btn-add" onclick="addProduct()">Add Product</button>
+    <!-- LEFT: Controls -->
+    <div class="card">
+        <h1>🚀 Product Manager</h1>
 
-    <h2>✏ Update Product</h2>
-    <input type="number" id="updateId" placeholder="Product ID">
-    <input type="text" id="updateName" placeholder="New Name">
-    <input type="number" id="updatePrice" placeholder="New Price">
-    <button class="btn-update" onclick="updateProduct()">Update Product</button>
+        <h2>➕ Add</h2>
+        <input id="addId" placeholder="ID">
+        <input id="addName" placeholder="Name">
+        <input id="addPrice" placeholder="Price">
+        <button class="btn-add" onclick="addProduct()">Add</button>
 
-    <h2>🗑 Delete Product</h2>
-    <input type="number" id="deleteId" placeholder="Product ID">
-    <button class="btn-delete" onclick="deleteProduct()">Delete Product</button>
+        <h2>✏ Update</h2>
+        <input id="updateId" placeholder="ID">
+        <input id="updateName" placeholder="Name">
+        <input id="updatePrice" placeholder="Price">
+        <button class="btn-update" onclick="updateProduct()">Update</button>
 
-    <div class="message" id="message"></div>
+        <h2>🗑 Delete</h2>
+        <input id="deleteId" placeholder="ID">
+        <button class="btn-delete" onclick="deleteProduct()">Delete</button>
+
+        <h2>📦 Load Products</h2>
+        <button class="btn-get" onclick="getProducts()">Get Products</button>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <!-- RIGHT: Product List -->
+    <div class="card">
+        <h2>📋 Products</h2>
+        <ul id="productList"></ul>
+    </div>
+
 </div>
 
 <script>
 const BASE_URL = "http://127.0.0.1:8000";
-const message = document.getElementById("message");
 
-function showMessage(text) {
-    message.textContent = text;
-    message.classList.add("show");
-    setTimeout(() => {
-        message.classList.remove("show");
-    }, 2000);
+function showMessage(msg) {
+    document.getElementById("message").innerText = msg;
+}
+
+async function getProducts() {
+    const res = await fetch(`${BASE_URL}/orders`);
+    const data = await res.json();
+
+    const list = document.getElementById("productList");
+    list.innerHTML = "";
+
+    data.forEach(p => {
+        const li = document.createElement("li");
+        li.innerText = `${p.id} - ${p.name} - ₹${p.price}`;
+        list.appendChild(li);
+    });
 }
 
 async function addProduct() {
@@ -173,7 +161,8 @@ async function addProduct() {
         body: JSON.stringify({ id: Number(id), name, price: Number(price) })
     });
 
-    showMessage("✅ Product Added Successfully");
+    showMessage("✅ Added");
+    getProducts();
 }
 
 async function updateProduct() {
@@ -187,7 +176,8 @@ async function updateProduct() {
         body: JSON.stringify({ id: Number(id), name, price: Number(price) })
     });
 
-    showMessage("✏️ Product Updated Successfully");
+    showMessage("✏ Updated");
+    getProducts();
 }
 
 async function deleteProduct() {
@@ -197,7 +187,8 @@ async function deleteProduct() {
         method: "DELETE"
     });
 
-    showMessage("🗑 Product Deleted Successfully");
+    showMessage("🗑 Deleted");
+    getProducts();
 }
 </script>
 
