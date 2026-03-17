@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #6dd5ed, #2193b0);
+            background-size: 300% 300%;
+            animation: gradientMove 12s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card {
+            width: 420px;
+            padding: 40px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            color: white;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            margin-top: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 12px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            transition: 0.3s;
+        }
+
+        input::placeholder {
+            color: rgba(255,255,255,0.8);
+        }
+
+        input:focus {
+            background: rgba(255,255,255,0.3);
+            box-shadow: 0 0 10px rgba(255,255,255,0.4);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-add {
+            background: #00c9a7;
+            color: white;
+        }
+
+        .btn-update {
+            background: #f7971e;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #ff416c;
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            opacity: 0.95;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            opacity: 0;
+            transition: 0.5s;
+        }
+
+        .show {
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>🚀 Product Manager</h1>
+
+    <h2>➕ Add Product</h2>
+    <input type="number" id="addId" placeholder="Product ID">
+    <input type="text" id="addName" placeholder="Product Name">
+    <input type="number" id="addPrice" placeholder="Product Price">
+    <button class="btn-add" onclick="addProduct()">Add Product</button>
+
+    <h2>✏ Update Product</h2>
+    <input type="number" id="updateId" placeholder="Product ID">
+    <input type="text" id="updateName" placeholder="New Name">
+    <input type="number" id="updatePrice" placeholder="New Price">
+    <button class="btn-update" onclick="updateProduct()">Update Product</button>
+
+    <h2>🗑 Delete Product</h2>
+    <input type="number" id="deleteId" placeholder="Product ID">
+    <button class="btn-delete" onclick="deleteProduct()">Delete Product</button>
+
+    <div class="message" id="message"></div>
+</div>
+
+<script>
+const BASE_URL = "http://127.0.0.1:8000";
+const message = document.getElementById("message");
+
+function showMessage(text) {
+    message.textContent = text;
+    message.classList.add("show");
+    setTimeout(() => {
+        message.classList.remove("show");
+    }, 2000);
+}
+
+async function addProduct() {
+    const id = addId.value;
+    const name = addName.value;
+    const price = addPrice.value;
+
+    await fetch(`${BASE_URL}/products`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: Number(id), name, price: Number(price) })
+    });
+
+    showMessage("✅ Product Added Successfully");
+}
+
+async function updateProduct() {
+    const id = updateId.value;
+    const name = updateName.value;
+    const price = updatePrice.value;
+
+    await fetch(`${BASE_URL}/products?id=${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: Number(id), name, price: Number(price) })
+    });
+
+    showMessage("✏️ Product Updated Successfully");
+}
+
+async function deleteProduct() {
+    const id = deleteId.value;
+
+    await fetch(`${BASE_URL}/products?id=${id}`, {
+        method: "DELETE"
+    });
+
+    showMessage("🗑 Product Deleted Successfully");
+}
+</script>
+
+</body>
+</html>
