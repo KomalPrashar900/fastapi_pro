@@ -5,6 +5,8 @@ from typing import List
 from database import session, engine
 import models
 from sqlalchemy.orm import Session
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI() 
 
@@ -14,7 +16,13 @@ models.Base.metadata.create_all(bind = engine)
 # prints metadata content 
 # print(models.Base.metadata.tables)
 
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # decorator 
 # routes
 @app.get("/")
